@@ -1,188 +1,551 @@
-/* ======= CONFIGURACIÓN GLOBAL ======= */
-body {
-  background: radial-gradient(circle at top left, #0b1220, #0e1422);
-  color: #f8fafc;
-  font-family: "Poppins", sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+/* Layout general y atmosfera visual del tablero. */
+.app-shell {
+  position: relative;
   min-height: 100vh;
+  padding: 40px 20px 56px;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 28%),
+    radial-gradient(circle at 85% 12%, rgba(251, 191, 36, 0.16), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(15, 23, 42, 0.8), rgba(2, 6, 23, 0.98));
+  z-index: -3;
+}
+
+.app-shell::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 88%);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.app-shell__orb {
+  position: fixed;
+  border-radius: 999px;
+  filter: blur(24px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.app-shell__orb--one {
+  top: -48px;
+  left: -12px;
+  width: 220px;
+  height: 220px;
+  background: rgba(34, 211, 238, 0.22);
+}
+
+.app-shell__orb--two {
+  right: -20px;
+  bottom: 18vh;
+  width: 260px;
+  height: 260px;
+  background: rgba(251, 146, 60, 0.2);
+}
+
+.dashboard {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+/* Superficie base compartida por todas las tarjetas/paneles. */
+.panel {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.6));
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 28px;
+  box-shadow:
+    0 24px 80px rgba(2, 6, 23, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 24px;
+  padding: 28px;
+}
+
+.hero__copy {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.eyebrow {
   margin: 0;
-  padding: 3rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7dd3fc;
 }
 
-/* ======= CONTENEDOR PRINCIPAL ======= */
-.app-container {
-  width: 100%;
-  max-width: 900px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 2.5rem 3rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(6px);
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
 }
 
-/* ======= TÍTULO PRINCIPAL ======= */
-h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  margin-bottom: 2.8rem;
-  text-align: center;
+.hero__text {
+  max-width: 62ch;
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 1rem;
 }
 
-h1 img {
-  width: 46px;
-  height: 46px;
-}
-
-/* ======= FORMULARIO ======= */
-form {
+.hero__tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  gap: 10px;
 }
 
-input,
-select {
-  background: #151c2c;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #f1f5f9;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  min-width: 180px;
-  transition: all 0.3s ease;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: #c5a86e;
-  box-shadow: 0 0 8px rgba(197, 168, 110, 0.25);
-}
-
-/* ======= BOTÓN AGREGAR ======= */
-button {
-  background: linear-gradient(135deg, #c5a86e, #b89656);
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  padding: 0.9rem 1.7rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #d6b878, #b89656);
-}
-
-/* ======= SECCIÓN DE RESUMEN ======= */
-h2 {
-  font-size: 1.5rem;
+.hero__tags span,
+.section-head__hint {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.55);
   color: #e2e8f0;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  position: relative;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
 }
 
-h2::after {
-  content: "";
+/* Bloque de metricas principales del encabezado. */
+.hero__cards {
+  display: grid;
+  gap: 14px;
+}
+
+.metric {
+  padding: 18px 18px 16px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(224, 10, 10, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.metric p,
+.stat-card p,
+.movement-card__meta,
+.field span {
+  margin: 0;
+  color: #94a3b8;
+}
+
+.metric strong,
+.stat-card strong {
   display: block;
-  width: 60px;
-  height: 3px;
-  background: #c5a86e;
-  margin: 0.5rem auto 0;
-  border-radius: 2px;
+  margin-top: 10px;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  color: #f8fafc;
 }
 
-/* ======= LISTA DE MOVIMIENTOS ======= */
-ul {
+.metric span,
+.stat-card span {
+  display: block;
+  margin-top: 8px;
+  color: #cbd5e1;
+  font-size: 0.94rem;
+}
+
+.metric--positive strong {
+  color: #4ade80;
+}
+
+.metric--negative strong {
+  color: #fb7185;
+}
+
+.metric--warning strong {
+  color: #fbbf24;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  padding: 20px;
+}
+
+/* Distribucion de formulario + grafico en la zona central. */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 20px;
+}
+
+.panel--form,
+.panel--chart,
+.panel--list {
+  padding: 22px;
+}
+
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.section-head h2 {
+  margin: 8px 0 0;
+  font-size: 1.4rem;
+}
+
+/* Sistema de campos de formulario reutilizable. */
+.expense-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field--wide {
+  grid-column: 1 / -1;
+}
+
+.field span {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(2, 6, 23, 0.45);
+  color: #f8fafc;
+  padding: 0.95rem 1rem;
+  border-radius: 16px;
+  font: inherit;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #64748b;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: rgba(125, 211, 252, 0.7);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.12);
+}
+
+.expense-form__button {
+  grid-column: 1 / -1;
+  border: 0;
+  border-radius: 18px;
+  padding: 1rem 1.2rem;
+  font-weight: 800;
+  color: #04111f;
+  background: linear-gradient(135deg, #7dd3fc, #fbbf24);
+  box-shadow: 0 18px 40px rgba(14, 165, 233, 0.18);
+}
+
+.expense-form__button:hover {
+  transform: translateY(-1px);
+}
+
+/* Contenedor del grafico y su resumen por categoria. */
+.chart-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.chart-panel__visual {
+  position: relative;
+  height: 320px;
+}
+
+.chart-wrap__total {
+  position: absolute;
+  inset: auto 0 8px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.chart-wrap__total span {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chart-wrap__total strong {
+  color: #f8fafc;
+  font-size: 1.2rem;
+  margin-top: 4px;
+}
+
+.chart-breakdown {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.chart-breakdown__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(2, 6, 23, 0.28);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  min-width: 0;
+}
+
+.chart-breakdown__meta,
+.chart-breakdown__values {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.chart-breakdown__meta strong {
+  color: #e2e8f0;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chart-breakdown__values {
+  flex-shrink: 0;
+  color: #cbd5e1;
+  text-align: right;
+}
+
+.chart-breakdown__values span {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.chart-breakdown__values strong {
+  color: #f8fafc;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.chart-breakdown__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+
+.movement-list {
+  display: grid;
+  gap: 12px;
   list-style: none;
   padding: 0;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  width: 100%;
-  max-width: 700px;
-}
-
-/* ======= CADA MOVIMIENTO ======= */
-li {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 1.2rem 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background 0.3s ease;
-}
-
-li:hover {
-  background: rgba(255, 255, 255, 0.09);
-}
-
-li div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-li strong {
-  font-size: 1rem;
-  color: #ffffff;
-}
-
-li span {
-  font-size: 0.9rem;
-  color: #9ca3af;
-}
-
-/* ======= MONTO Y BOTÓN ======= */
-.amount {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.amount p {
   margin: 0;
-  font-weight: 600;
+}
+
+.movement-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.movement-card__main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.movement-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.movement-badge--income {
+  color: #bbf7d0;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.18);
+}
+
+.movement-badge--expense {
+  color: #fecaca;
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.18);
+}
+
+.movement-card__title {
+  margin: 0;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.movement-card__meta {
+  margin-top: 4px;
+  font-size: 0.9rem;
+}
+
+.movement-card__side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.movement-card__amount {
+  font-weight: 800;
   font-size: 1rem;
 }
 
-.amount .income {
-  color: #22c55e;
+.movement-card__amount--income {
+  color: #4ade80;
 }
 
-.amount .expense {
-  color: #ef4444;
+.movement-card__amount--expense {
+  color: #fb7185;
 }
 
-.amount button {
-  width: 36px;
-  height: 36px;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  padding: 0;
-  box-shadow: 0 2px 6px rgba(197, 168, 110, 0.3);
+.movement-card__delete {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.75);
+  color: #cbd5e1;
+  padding: 0.65rem 0.9rem;
+  border-radius: 14px;
 }
 
-/* ======= TOTAL ======= */
-.total {
-  margin-top: 2rem;
-  text-align: right;
-  font-weight: 600;
-  color: #c5a86e;
-  font-size: 1.1rem;
+.movement-card__delete:hover {
+  color: #fff;
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+/* Estado vacio comun para listas y grafico sin datos. */
+.empty-state {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 180px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  border: 1px dashed rgba(148, 163, 184, 0.2);
+}
+
+.empty-state strong {
+  font-size: 1.05rem;
+  color: #f8fafc;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #94a3b8;
+  max-width: 32ch;
+}
+
+.empty-state--chart {
+  min-height: 360px;
+}
+
+/* Ajustes responsivos para tablets y pantallas intermedias. */
+@media (max-width: 920px) {
+  .hero,
+  .dashboard-grid,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-breakdown {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Altura especifica del donut en resoluciones medianas. */
+@media (max-width: 920px) {
+  .chart-panel__visual {
+    height: 300px;
+  }
+}
+
+/* Ajustes finales para experiencia movil. */
+@media (max-width: 680px) {
+  .app-shell {
+    padding: 18px 12px 40px;
+  }
+
+  .hero,
+  .panel--form,
+  .panel--chart,
+  .panel--list {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .expense-form,
+  .movement-card,
+  .movement-card__side {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .movement-card__main {
+    align-items: flex-start;
+  }
+
+  .movement-card__side {
+    gap: 10px;
+  }
+
+  .movement-card__delete {
+    width: 100%;
+  }
+
+  .chart-panel__visual {
+    height: 280px;
+  }
 }
